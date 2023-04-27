@@ -4,129 +4,161 @@
 
 @media screen and (min-width: 768px) {
   .filters-group-container {
-    width: 30%;
-    max-width: 350px;
+    width: 25%;
+    max-width: 280px;
+    min-width: 240px;
     margin-top: 48px;
     flex-shrink: 0;
   }
 }
 
-/* Write your CSS here */
-.input-container {
+.search-input-container {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  width: 100%;
   background-color: #f1f5f9;
   border-radius: 8px;
-  padding: 10px;
-  flex-shrink: 1;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
 }
+
 .search-input {
-  border: none;
-  background-color: transparent;
+  background-color: #f1f5f9;
+  color: #0f172a;
   font-family: 'Roboto';
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
+  border: none;
   outline: none;
+  flex-grow: 1;
 }
+
 .search-icon {
-  margin-left: 3px;
-  width: 18px;
-  height: 18px;
+  color: #475569;
+  width: 20px;
+  height: 20px;
+}
+
+.category-heading {
+  color: #12022f;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 24px;
 }
 
 @media screen and (min-width: 768px) {
-  .search-input {
-    flex-grow: 1;
+  .category-heading {
+    margin-top: 32px;
   }
 }
 
-.category-main-container {
-  list-style-type: none;
-  padding: 0px;
-  margin-bottom: 20px;
-}
-.category-heading {
-  font-family: 'Roboto';
-  font-size: 16px;
-  font-weight: 700;
-  color: #12022f;
-}
-.category-items {
-  padding: 0px;
-  margin-bottom: 10px;
-}
-.category-button {
-  border: none;
-  background-color: transparent;
-  outline: none;
-  cursor: pointer;
-  font-family: 'Roboto';
-  font-size: 16px;
-  font-weight: 400;
-  color: #64748b;
-  padding: 0px;
+.categories-list {
+  padding-left: 0;
 }
 
-.active-category-button {
+.category-item {
+  list-style-type: none;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .category-item {
+    margin-top: 24px;
+  }
+}
+
+.category-name {
+  color: #64748b;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .category-name {
+    font-size: 18px;
+  }
+}
+
+.active-category-name {
   color: #0967d2;
 }
 
-.ratings-main-container {
-  list-style-type: none;
-  padding: 0px;
-  margin-bottom: 20px;
-}
-.ratings-heading {
-  font-family: 'Roboto';
-  font-size: 16px;
-  font-weight: 700;
+.rating-heading {
   color: #12022f;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 18px;
 }
-.ratings-items {
-  padding: 0px;
-  margin-bottom: 10px;
+
+.ratings-list {
+  padding-left: 0px;
 }
-.ratings-button {
-  border: none;
-  background-color: transparent;
-  outline: none;
-  cursor: pointer;
-  padding: 0px;
+
+.rating-item {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
 }
 
-.ratings-image {
-  width: 120px;
-  margin-right: 10px;
+.rating-img {
+  max-width: 152px;
+  height: 20px;
 }
 
-.up-para {
-  font-family: 'Roboto';
-  font-size: 16px;
-  font-weight: 400;
+@media screen and (min-width: 768px) {
+  .rating-img {
+    height: 24px;
+  }
+}
+
+.and-up {
   color: #64748b;
-  margin-bottom: 0px;
-  margin-top: 0px;
+  font-family: Roboto;
+  font-size: 16px;
+  margin-left: 10px;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
-.clear-filter-button {
-  border: 1px solid #0967d2;
-  background-color: transparent;
+@media screen and (min-width: 768px) {
+  .and-up {
+    font-size: 18px;
+    margin-left: 14px;
+  }
+}
+
+.active-rating {
+  color: #0967d2;
+}
+
+.clear-filters-btn {
+  background-color: #ffffff;
+  color: #0967d2;
+  font-family: 'Roboto';
+  font-size: 10px;
+  font-weight: 700;
   border-radius: 4px;
+  border: 1px solid #0967d2;
+  padding-top: 8px;
+  padding-left: 12px;
+  padding-bottom: 8px;
+  padding-right: 12px;
+  margin-top: 16px;
   outline: none;
   cursor: pointer;
-  font-family: 'Roboto';
-  font-size: 12px;
-  font-weight: 500;
-  color: #0967d2;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 10px;
-  padding-left: 10px;
-  margin-top: 20px;
-  margin-bottom: 50px;
+}
+
+@media screen and (min-width: 768px) {
+  .clear-filters-btn {
+    font-size: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 32px;
+  }
 }

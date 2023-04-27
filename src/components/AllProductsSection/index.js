@@ -70,68 +70,20 @@ const apiStatusConstants = {
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
-  noProducts: 'NO_PRODUCTS',
 }
 
 class AllProductsSection extends Component {
   state = {
     productsList: [],
-    isLoading: false,
-    activeOptionId: sortbyOptions[0].optionId,
     apiStatus: apiStatusConstants.initial,
-    searchInput: '',
-    categoty: '',
-    ratings: '',
+    activeOptionId: sortbyOptions[0].optionId,
     activeCategoryId: '',
-    activeRatingsId: '',
+    searchInput: '',
+    activeRatingId: '',
   }
 
   componentDidMount() {
     this.getProducts()
-  }
-
-  onGettingSearchInput = searchInput => {
-    this.setState(
-      {
-        searchInput,
-      },
-      this.getProducts,
-    )
-  }
-
-  onGettingCategoryId = categoty => {
-    this.setState(
-      {
-        categoty,
-        activeCategoryId: categoty,
-      },
-      this.getProducts,
-    )
-  }
-
-  onClearingFilters = () => {
-    this.setState(
-      {
-        activeOptionId: sortbyOptions[0].optionId,
-        apiStatus: apiStatusConstants.initial,
-        searchInput: '',
-        categoty: '',
-        ratings: '',
-        activeCategoryId: '',
-        activeRatingsId: '',
-      },
-      this.getProducts,
-    )
-  }
-
-  onGettingRatings = ratings => {
-    this.setState(
-      {
-        ratings,
-        activeRatingsId: ratings,
-      },
-      this.getProducts,
-    )
   }
 
   getProducts = async () => {
@@ -139,11 +91,13 @@ class AllProductsSection extends Component {
       apiStatus: apiStatusConstants.inProgress,
     })
     const jwtToken = Cookies.get('jwt_token')
-
-    // TODO: Update the code to get products with filters applied
-
-    const {activeOptionId, categoty, ratings, searchInput} = this.state
-    const apiUrl = `https://apis.ccbp.in/products?sort_by=${activeOptionId}&category=${categoty}&title_search=${searchInput}&rating=${ratings}`
+    const {
+      activeOptionId,
+      activeCategoryId,
+      searchInput,
+      activeRatingId,
+    } = this.state
+    const apiUrl = `https://apis.ccbp.in/products?sort_by=${activeOptionId}&category=${activeCategoryId}&title_search=${searchInput}&rating=${activeRatingId}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -153,11 +107,6 @@ class AllProductsSection extends Component {
     const response = await fetch(apiUrl, options)
     if (response.ok) {
       const fetchedData = await response.json()
-      if (fetchedData.products.length === 0) {
-        this.setState({
-          apiStatus: apiStatusConstants.noProducts,
-        })
-      }
       const updatedData = fetchedData.products.map(product => ({
         title: product.title,
         brand: product.brand,
@@ -168,7 +117,6 @@ class AllProductsSection extends Component {
       }))
       this.setState({
         productsList: updatedData,
-        isLoading: false,
         apiStatus: apiStatusConstants.success,
       })
     } else {
@@ -178,15 +126,37 @@ class AllProductsSection extends Component {
     }
   }
 
+  renderLoadingView = () => (
+    <div className="products-loader-container">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderFailureView = () => (
+    <div className="products-error-view-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-products-error-view.png"
+        alt="products failure"
+        className="products-failure-img"
+      />
+      <h1 className="product-failure-heading-text">
+        Oops! Something Went Wrong
+      </h1>
+      <p className="products-failure-description">
+        We are having some trouble processing your request. Please try again.
+      </p>
+    </div>
+  )
+
   changeSortby = activeOptionId => {
     this.setState({activeOptionId}, this.getProducts)
   }
 
-  renderProductsList = () => {
+  renderProductsListView = () => {
     const {productsList, activeOptionId} = this.state
+    const shouldShowProductsList = productsList.length > 0
 
-    // TODO: Add No Products View
-    return (
+    return shouldShowProductsList ? (
       <div className="all-products-container">
         <ProductsHeader
           activeOptionId={activeOptionId}
@@ -199,75 +169,79 @@ class AllProductsSection extends Component {
           ))}
         </ul>
       </div>
+    ) : (
+      <div className="no-products-view">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
+          className="no-products-img"
+          alt="no products"
+        />
+        <h1 className="no-products-heading">No Products Found</h1>
+        <p className="no-products-description">
+          We could not find any products. Try other filters.
+        </p>
+      </div>
     )
   }
 
-  renderLoader = () => (
-    <div className="products-loader-container">
-      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
-    </div>
-  )
-
-  noProductsView = () => (
-    <div className="failure-view-container">
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
-        alt="no products"
-        className="products-failure-image"
-      />
-      <h1 className="failure-heading">No Products Found</h1>
-      <p className="failure-para">
-        We could not find any products. Try other filters.
-      </p>
-    </div>
-  )
-
-  // TODO: Add failure view
-  renderFailureView = () => (
-    <div className="failure-view-container">
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-products-error-view.png"
-        alt="products failure"
-        className="products-failure-image"
-      />
-      <h1 className="failure-heading">Oops! Something Went wrong</h1>
-      <p className="failure-para">
-        We are having some trouble processing your request. Please try again.
-      </p>
-    </div>
-  )
-
   renderAllProducts = () => {
     const {apiStatus} = this.state
+
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderProductsList()
+        return this.renderProductsListView()
       case apiStatusConstants.failure:
         return this.renderFailureView()
-      case apiStatusConstants.noProducts:
-        return this.noProductsView()
       case apiStatusConstants.inProgress:
-        return this.renderLoader()
+        return this.renderLoadingView()
       default:
         return null
     }
   }
 
+  clearFilters = () => {
+    this.setState(
+      {
+        searchInput: '',
+        activeCategoryId: '',
+        activeRatingId: '',
+      },
+      this.getProducts,
+    )
+  }
+
+  changeRating = activeRatingId => {
+    this.setState({activeRatingId}, this.getProducts)
+  }
+
+  changeCategory = activeCategoryId => {
+    this.setState({activeCategoryId}, this.getProducts)
+  }
+
+  enterSearchInput = () => {
+    this.getProducts()
+  }
+
+  changeSearchInput = searchInput => {
+    this.setState({searchInput})
+  }
+
   render() {
-    const {isLoading, activeCategoryId, activeRatingsId} = this.state
+    const {activeCategoryId, searchInput, activeRatingId} = this.state
 
     return (
       <div className="all-products-section">
-        {/* TODO: Update the below element */}
         <FiltersGroup
+          searchInput={searchInput}
           categoryOptions={categoryOptions}
           ratingsList={ratingsList}
+          changeSearchInput={this.changeSearchInput}
+          enterSearchInput={this.enterSearchInput}
           activeCategoryId={activeCategoryId}
-          activeRatingsId={activeRatingsId}
-          onGettingSearchInput={this.onGettingSearchInput}
-          onGettingCategoryId={this.onGettingCategoryId}
-          onGettingRatings={this.onGettingRatings}
-          onClearingFilters={this.onClearingFilters}
+          activeRatingId={activeRatingId}
+          changeCategory={this.changeCategory}
+          changeRating={this.changeRating}
+          clearFilters={this.clearFilters}
         />
         {this.renderAllProducts()}
       </div>

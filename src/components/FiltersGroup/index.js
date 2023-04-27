@@ -1,94 +1,113 @@
 import {BsSearch} from 'react-icons/bs'
+
 import './index.css'
 
 const FiltersGroup = props => {
-  const {onGettingSearchInput, onClearingFilters} = props
-
-  const onClickFilter = () => onClearingFilters()
-
-  const renderCategory = () => {
-    const {categoryOptions} = props
-    return (
-      <ul className="category-main-container">
-        <h1 className="category-heading">Category</h1>
-        {categoryOptions.map(category => {
-          const {onGettingCategoryId, activeCategoryId} = props
-          const onClickcategory = () => onGettingCategoryId(category.categoryId)
-
-          const isActive = activeCategoryId === category.categoryId
-
-          const activeClass = isActive
-            ? 'category-button active-category-button'
-            : 'category-button'
-
-          return (
-            <li key={category.categoryId} className="category-items">
-              <button
-                type="button"
-                className={activeClass}
-                onClick={onClickcategory}
-              >
-                <p>{category.name}</p>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
-
-  const renderRatings = () => {
+  const renderRatingsFiltersList = () => {
     const {ratingsList} = props
-    return (
-      <ul className="ratings-main-container">
-        <h1 className="ratings-heading">Ratings</h1>
-        {ratingsList.map(ratings => {
-          const {onGettingRatings} = props
-          const onClickingRatings = () => onGettingRatings(ratings.ratingId)
-          return (
-            <li key={ratings.ratingId} className="ratings-items">
-              <button
-                type="button"
-                className="ratings-button"
-                onClick={onClickingRatings}
-              >
-                <img
-                  src={ratings.imageUrl}
-                  alt={`rating ${ratings.ratingId}`}
-                  className="ratings-image"
-                />
-                <p className="up-para">& up</p>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    )
+
+    return ratingsList.map(rating => {
+      const {changeRating, activeRatingId} = props
+      const onClickRatingItem = () => changeRating(rating.ratingId)
+
+      const ratingClassName =
+        activeRatingId === rating.ratingId ? `and-up active-rating` : `and-up`
+
+      return (
+        <li
+          className="rating-item"
+          key={rating.ratingId}
+          onClick={onClickRatingItem}
+        >
+          <img
+            src={rating.imageUrl}
+            alt={`rating ${rating.ratingId}`}
+            className="rating-img"
+          />
+          <p className={ratingClassName}>& up</p>
+        </li>
+      )
+    })
   }
 
-  const onchangeSearchInput = event => {
+  const renderRatingsFilters = () => (
+    <div>
+      <h1 className="rating-heading">Rating</h1>
+      <ul className="ratings-list">{renderRatingsFiltersList()}</ul>
+    </div>
+  )
+
+  const renderCategoriesList = () => {
+    const {categoryOptions} = props
+
+    return categoryOptions.map(category => {
+      const {changeCategory, activeCategoryId} = props
+      const onClickCategoryItem = () => changeCategory(category.categoryId)
+      const isActive = category.categoryId === activeCategoryId
+      const categoryClassName = isActive
+        ? `category-name active-category-name`
+        : `category-name`
+
+      return (
+        <li
+          className="category-item"
+          key={category.categoryId}
+          onClick={onClickCategoryItem}
+        >
+          <p className={categoryClassName}>{category.name}</p>
+        </li>
+      )
+    })
+  }
+
+  const renderProductCategories = () => (
+    <>
+      <h1 className="category-heading">Category</h1>
+      <ul className="categories-list">{renderCategoriesList()}</ul>
+    </>
+  )
+
+  const onEnterSearchInput = event => {
+    const {enterSearchInput} = props
     if (event.key === 'Enter') {
-      onGettingSearchInput(event.target.value)
+      enterSearchInput()
     }
   }
 
-  return (
-    <div className="filters-group-container">
-      <div className="input-container">
+  const onChangeSearchInput = event => {
+    const {changeSearchInput} = props
+    changeSearchInput(event.target.value)
+  }
+
+  const renderSearchInput = () => {
+    const {searchInput} = props
+
+    return (
+      <div className="search-input-container">
         <input
+          value={searchInput}
           type="search"
-          placeholder="Search"
           className="search-input"
-          onChange={onchangeSearchInput}
+          placeholder="Search"
+          onChange={onChangeSearchInput}
+          onKeyDown={onEnterSearchInput}
         />
         <BsSearch className="search-icon" />
       </div>
-      {renderCategory()}
-      {renderRatings()}
+    )
+  }
+
+  const {clearFilters} = props
+
+  return (
+    <div className="filters-group-container">
+      {renderSearchInput()}
+      {renderProductCategories()}
+      {renderRatingsFilters()}
       <button
         type="button"
-        className="clear-filter-button"
-        onClick={onClickFilter}
+        className="clear-filters-btn"
+        onClick={clearFilters}
       >
         Clear Filters
       </button>
