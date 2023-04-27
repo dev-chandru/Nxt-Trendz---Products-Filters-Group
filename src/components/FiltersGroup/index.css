@@ -1,0 +1,132 @@
+.filters-group-container {
+  margin-top: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .filters-group-container {
+    width: 30%;
+    max-width: 350px;
+    margin-top: 48px;
+    flex-shrink: 0;
+  }
+}
+
+/* Write your CSS here */
+.input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  padding: 10px;
+  flex-shrink: 1;
+}
+.search-input {
+  border: none;
+  background-color: transparent;
+  font-family: 'Roboto';
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+}
+.search-icon {
+  margin-left: 3px;
+  width: 18px;
+  height: 18px;
+}
+
+@media screen and (min-width: 768px) {
+  .search-input {
+    flex-grow: 1;
+  }
+}
+
+.category-main-container {
+  list-style-type: none;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+.category-heading {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 700;
+  color: #12022f;
+}
+.category-items {
+  padding: 0px;
+  margin-bottom: 10px;
+}
+.category-button {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 400;
+  color: #64748b;
+  padding: 0px;
+}
+
+.active-category-button {
+  color: #0967d2;
+}
+
+.ratings-main-container {
+  list-style-type: none;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+.ratings-heading {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 700;
+  color: #12022f;
+}
+.ratings-items {
+  padding: 0px;
+  margin-bottom: 10px;
+}
+.ratings-button {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ratings-image {
+  width: 120px;
+  margin-right: 10px;
+}
+
+.up-para {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 400;
+  color: #64748b;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.clear-filter-button {
+  border: 1px solid #0967d2;
+  background-color: transparent;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-size: 12px;
+  font-weight: 500;
+  color: #0967d2;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
